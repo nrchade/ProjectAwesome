@@ -1,0 +1,49 @@
+---
+title: "Morningstar Table Parser"
+author: "Nick Chadeayne"
+date: "Thursday, April 23, 2015"
+output: html_document
+---
+
+
+
+```{r}
+library(rvest)
+mstar <- html("http://portfolios.morningstar.com/fund/summary?t=MALOX&region=usa&culture=en_US")
+AA <- html_nodes(mstar, 'table#asset_allocation_tab')
+AA.df <- html_table(AA[1])
+ES <- html_nodes(mstar, 'table#equity_style_tab')
+ES.df <- html_table(ES[1])
+BS <- html_nodes(mstar, 'table#bond_style_tab')
+BS.df <- html_table(BS[1])
+#ESec <- html_nodes(mstar, 'table#equity_sector_tab')
+#ESec.df <- html_table(ESec[1])
+#BSec <- html_nodes(mstar, 'table#bond_sector_tab')
+#BSec.df <- html_table(BSec[1])
+Sec <- html_nodes(mstar, 'table#sector_we_tab')
+Sec.df <- html_table(Sec[1], fill = TRUE)
+WorldReg <- html_nodes(mstar, 'table#world_regions_tab')
+WorldReg.df <- html_table(WorldReg[1])
+AA.df
+ES.df
+BS.df
+#View(ESec.df)
+#View(BSec.df)
+Sec.df
+WorldReg.df
+test <- html_nodes(mstar, 'table')
+for (i in 1:length(test)){
+  #paste('table_',i) <- test[i]
+  print(test[i])
+  print('END')
+  }
+
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
