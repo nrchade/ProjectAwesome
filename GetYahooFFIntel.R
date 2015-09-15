@@ -60,31 +60,31 @@ responseAllPlayersFree<- html(url, config(token = token))
 
 baseurl <- "http://fantasysports.yahooapis.com/fantasy/v2/league/348.l.982118/players?&status=A"
 playerCount <- paste("&start=",seq(0,1050,by=25),sep="")
-PWeekCount<-paste("&stat1=S_PW_",1:17,sep="")
-YahooURLs <- unlist(lapply(PWeekCount,function(x)paste(baseurl,playerCount,x,sep="")))
+#PWeekCount<-paste("&stat1=S_PW_",1:17,sep="")
+YahooURLs <- unlist((paste(baseurl,playerCount,sep="")))
 
-yahoo<-lapply(YahooURLs,function(x) {Sys.sleep(abs(rnorm(1)*4+7));html(x, config(token = token))})
+yahooHTML<-lapply(YahooURLs,function(x) {Sys.sleep(abs(rnorm(1)*4+7));html(x, config(token = token))})
 
 
-for (i in 1:(length(yahoo)) ) {
-  Names <- yahoo[[i]] %>% html_nodes('players') %>% html_nodes('full') %>% html_text()
-  Player_id <- yahoo[[i]] %>% html_nodes('players') %>% html_nodes('player_id') %>% html_text()
-  Position <- yahoo[[i]] %>% html_nodes('players') %>%  html_nodes('position_type') %>% html_text()
-  Eligible <- yahoo[[i]] %>% html_nodes('players') %>%  html_nodes('eligible_positions') %>% html_text()
-  ByeWeek <- yahoo[[i]] %>% html_nodes('players') %>%  html_nodes('bye_weeks') %>% html_text()
-  IsDroppable <- yahoo[[i]] %>% html_nodes('players') %>%  html_nodes('is_undroppable') %>% html_text()
-  Team <- yahoo[[i]] %>% html_nodes('players') %>%  html_nodes('editorial_team_full_name') %>% html_text()
-  Notes <- yahoo[[i]] %>% html_nodes('players') %>%  html_nodes('has_player_notes') %>% html_text()
-    if (i == 1) {AllPlayersFree <- data.frame(Names,Player_id,Position,Team,Eligible,ByeWeek,IsDroppable,Notes)}
-  else {AllPlayersFree <- rbind(AllPlayersFree,data.frame(Names,Player_id,Position,Team,Eligible,ByeWeek,IsDroppable,Notes))}
+for (i in 1:(length(yahooHTML)) ) {
+  Names <- yahooHTML[[i]] %>% html_nodes('players') %>% html_nodes('full') %>% html_text()
+  Player_id <- yahooHTML[[i]] %>% html_nodes('players') %>% html_nodes('player_id') %>% html_text()
+  Position <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('position_type') %>% html_text()
+  Eligible <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('eligible_positions') %>% html_text()
+  ByeWeek <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('bye_weeks') %>% html_text()
+  IsDroppable <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('is_undroppable') %>% html_text()
+  Team <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('editorial_team_full_name') %>% html_text()
+  #Notes <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('has_player_notes') %>% html_text()
+    if (i == 1) {AllPlayersFree <- data.frame(Names,Player_id,Position,Team,Eligible,ByeWeek,IsDroppable)}
+  else {AllPlayersFree <- rbind(AllPlayersFree,data.frame(Names,Player_id,Position,Team,Eligible,ByeWeek,IsDroppable))}
 rm(Names)
 rm(Player_id)
 rm(Position)
 rm(Eligible)
 rm(ByeWeek)
 rm(IsDroppable)
-rm(Team
-rm(Notes))
+rm(Team)
+#rm(Notes)
 
 
 }
