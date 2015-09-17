@@ -74,18 +74,34 @@ for (i in 1:(length(yahooHTML)) ) {
   ByeWeek <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('bye_weeks') %>% html_text()
   IsDroppable <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('is_undroppable') %>% html_text()
   Team <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('editorial_team_full_name') %>% html_text()
+  Teamid <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('editorial_team_abbr') %>% html_text()
   #Notes <- yahooHTML[[i]] %>% html_nodes('players') %>%  html_nodes('has_player_notes') %>% html_text()
-    if (i == 1) {AllPlayersFree <- data.frame(Names,Player_id,Position,Team,Eligible,ByeWeek,IsDroppable)}
-  else {AllPlayersFree <- rbind(AllPlayersFree,data.frame(Names,Player_id,Position,Team,Eligible,ByeWeek,IsDroppable))}
-rm(Names)
-rm(Player_id)
-rm(Position)
-rm(Eligible)
-rm(ByeWeek)
-rm(IsDroppable)
-rm(Team)
-#rm(Notes)
-
-
-}
+  if (i == 1) {AllPlayersFree <- data.frame(Names,Player_id,Position,Team,Eligible,ByeWeek,IsDroppable,Teamid)}
+  else {AllPlayersFree <- rbind(AllPlayersFree,data.frame(Names,Player_id,Position,Team,Eligible,ByeWeek,IsDroppable,Teamid))}
+  rm(Names)
+  rm(Player_id)
+  rm(Position)
+  rm(Eligible)
+  rm(ByeWeek)
+  rm(IsDroppable)
+  rm(Team)
+  #rm(Notes)
   
+  
+}
+#baseurl <- "http://football.fantasysports.yahoo.com/f1/982118/players?&status=T&pos=O&stat1=S_PW_2"
+#baseurl <- "http://fantasysports.yahooapis.com/fantasy/v2/league/348.l.982118/players?&status=T"
+#playerCount <- paste("&start=",seq(0,150,by=25),sep="")
+#PWeekCount<-paste("&stat1=S_PW_",1:17,sep="")
+#YahooURLs <- unlist((paste(baseurl,playerCount,sep="")))
+
+#yahooHTML<-lapply(YahooURLs,function(x) {Sys.sleep(abs(rnorm(1)*4+7));html(x)})#, config(token = token))})
+
+#html <- html(yahooHTML[[1]])
+#cast <- html_nodes(html, "a")
+
+
+AllPlayersFree$Teamid <- toupper(AllPlayersFree$Teamid)
+AllPlayersFree$Key <- paste0(AllPlayersFree$Names, sep=":",AllPlayersFree$Teamid)
+Rankings <- read.csv("//HOUIC-S-50913/Nicholaus.Chadeayne$/Cached/My Documents/FFA-CustomRankings.csv", stringsAsFactors=F, header=TRUE)
+Rankings$Key <- paste0(Rankings$playername, sep=":", Rankings$playerteam)
