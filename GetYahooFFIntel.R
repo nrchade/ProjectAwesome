@@ -103,5 +103,5 @@ for (i in 1:(length(yahooHTML)) ) {
 
 AllPlayersFree$Teamid <- toupper(AllPlayersFree$Teamid)
 AllPlayersFree$Key <- paste0(AllPlayersFree$Names, sep=":",AllPlayersFree$Teamid)
-Rankings <- read.csv("//HOUIC-S-50913/Nicholaus.Chadeayne$/Cached/My Documents/FFA-CustomRankings.csv", stringsAsFactors=F, header=TRUE)
+Rankings <- read.csv("/FFA-CustomRankings.csv", stringsAsFactors=F, header=TRUE)
 Rankings$Key <- paste0(Rankings$playername, sep=":", Rankings$playerteam)
